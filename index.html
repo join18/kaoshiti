@@ -4,11 +4,92 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <script src="./node_modules/jquery/dist/jquery.js"></script>
-    <link rel="stylesheet" href="./bootstrap.min.css" />
-    <script src="./bootstrap.bundle.min.js"></script>
+    <script src="./alllinks/node_modules/jquery/dist/jquery.js"></script>
+    <script src="./alllinks/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="./alllinks/bootstrap.min.css" />
+    <script src=""></script>
+    <style>
+      .table {
+        width: 80%;
+        margin: auto;
+        margin-top: 50px;
+        text-align: center;
+      }
+      h1 {
+        text-align: center;
+        margin-top: 50px;
+      }
+    </style>
   </head>
   <body>
-    <a href="./Tea.html">茶叶管理</a>
+    <h1>练习作业集合</h1>
+    <table class="table table-striped table-dark">
+      <thead>
+        <tr>
+          <th scope="col">作业名1</th>
+          <th scope="col">链接</th>
+          <th scope="col">日期</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <script>
+      let arr = [
+        {
+          title: "左右互选",
+          links: "./lianxiwork/左右互选.html",
+        },
+        {
+          title: "登录",
+          links: "./lianxiwork/denglu.html",
+        },
+        {
+          title: "增删改查",
+          links: "./lianxiwork/from.html",
+        },
+        {
+          title: "Jq增删改查",
+          links: "./lianxiwork/Jq增删改查.html",
+        },
+        {
+          title: "留言板",
+          links: "./lianxiwork/liuyan.html",
+        },
+        {
+          title: "MP3增删改查",
+          links: "./lianxiwork/mp3增删改查2.html",
+        },
+        {
+          title: "购物车",
+          links: "./lianxiwork/shoppingCar.html",
+        },
+        {
+          title: "茶叶增删改查1",
+          links: "./lianxiwork/Tea.html",
+        },
+        {
+          title: "茶叶增删改查",
+          links: "./lianxiwork/Tea.html",
+        },
+      ];
+      $(function () {
+        let html = "";
+        arr.forEach((item) => {
+          html += `<tr>
+                <td>${item.title}</td>
+                <td><a href="${item.links}">链接</a></td>
+                <td>${data()}</td>
+        </tr>`;
+        });
+        $("tbody").html(html);
+      });
+      function data() {
+        let time = new Date();
+        let year = time.getFullYear();
+        let month = time.getMonth() + 1;
+        let day = time.getDate();
+        return `${year}/${month}/${day}`;
+      }
+    </script>
   </body>
 </html>

@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="../alllinks/node_modules/jquery/dist/jquery.js"></script>
+    <link rel="stylesheet" href="./shoppingCar.css" />
+    <link rel="stylesheet" href="../alllinks/bootstrap.min.css" />
+    <script src="../alllinks/bootstrap.bundle.min.js"></script>
+    <style></style>
+  </head>
+  <body>
+    <div id="listbox">
+      <h1>商品列表</h1>
+      <button type="button" class="btn btn-outline-primary" id="addbtn">
+        添加商品
+      </button>
+      <table class="product-list">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>产品图片</th>
+            <th>产品名称</th>
+            <th>价格</th>
+            <th>库存</th>
+            <th>添加到购物车</th>
+          </tr>
+        </thead>
+        <tbody id="listtbody"></tbody>
+      </table>
+    </div>
+    <div id="shoppingbox">
+      <h1>购物车</h1>
+      <table class="cart">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>产品图片</th>
+            <th>产品名称</th>
+            <th>价格</th>
+            <th>数量</th>
+            <th>小计</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody id="Carlisttbody"></tbody>
+        <tfoot>
+          <tr>
+            <td colspan="7">总计：<b id="b"></b></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <div id="modal">
+      <div id="modal-content">
+        <h1>添加商品</h1>
+        图片：<input type="text" id="img" /><br />名字：<input
+          type="text"
+          id="name"
+        /><br />
+        价格：<input type="text" id="price" /><br />
+        库存：<input type="text" id="number" /><br />
+        <button type="button" class="btn btn-outline-warning">确认</button>
+        <button type="button" class="btn btn-outline-warning">取消</button>
+      </div>
+    </div>
+    <div id="modalTwo">
+      <div id="modal-content-two">
+        <h1>修改商品--<b id="b1"></b></h1>
+        图片：<input type="text" id="Myimg" /><br />名字：<input
+          type="text"
+          id="Myname"
+        /><br />
+        价格：<input type="text" id="Myprice" /><br />
+        库存：<input type="text" id="Mynumber" /><br />
+        <button type="button" class="btn btn-outline-warning">保存</button>
+        <button type="button" class="btn btn-outline-warning">取消</button>
+      </div>
+    </div>
+
+    <script>
+      let arr = [];
+      let idnex;
+      let addbtn = document.querySelector("#addbtn");
+      //添加遮罩层
+      let hiddenbox = document.querySelector("#modal");
+      //修改遮罩层
+      let modalTwo = document.querySelector("#modalTwo");
+      //tbody事件
+      let listtbody = document.querySelector("#listtbody");
+      let Carlisttbody = document.querySelector("#Carlisttbody");
+      window.onload = function () {
+        let localadd = localStorage.getItem("value");
+        if (localadd != null) {
+          arr = JSON.parse(localadd);
+        }
+        let localadd1 = localStorage.getItem("value1");
+        if (localadd1 != null) {
+          Carlist = JSON.parse(localadd1);
+        }
+        randerCarlist();
+        shoppingCarlist();
+        zongji();
+        addbtn.addEventListener("click", addFun);
+        hiddenbox.addEventListener("click", hiddenboxFun);
+        listtbody.addEventListener("click", listtbodyfun);
+        modalTwo.addEventListener("click", modalTwoFun);
+        Carlisttbody.addEventListener("click", Carlisttbodyfun);
+      };
+      function zongji() {
+        let zh = Carlist.reduce((s, item) => {
+          return s + item.price * item.number;
+        }, 0);
+        b.innerHTML = zh;
+      }
+      function Carlisttbodyfun() {
+        let btn = event.target;
+        let index = event.target.dataset.index;
+        // console.log(Carlist[index].number);
+        // console.log(arr[index].Number);
+        if (btn.tagName == "BUTTON" && btn.innerHTML == "+") {
+          let id = Carlist[index].id;
+          let arrindex = arr.findIndex((item) => {
+            return item.id == id;
+          });
+          if (arr[arrindex].Number == 0) {
+            alert("没有了");
+            return;
+          } else if (arrindex == -1) {
+            alert("商品已经下架");
+            return;
+          } else {
+            arr[arrindex].Number--;
+            Carlist[index].number++;
+          }
+          localStorage.setItem("value1", JSON.stringify(Carlist));
+          localStorage.setItem("value", JSON.stringify(arr));
+          randerCarlist();
+          shoppingCarlist();
+        }
+        if (btn.tagName == "BUTTON" && btn.innerHTML == "-") {
+          if (Carlist[index].number < 2) {
+            alert("一个减不了");
+            return;
+          }
+          let id = Carlist[index].id;
+          let arrindex = arr.findIndex((item) => {
+            return item.id == id;
+          });
+          arr[arrindex].Number++;
+          Carlist[index].number--;
+          localStorage.setItem("value1", JSON.stringify(Carlist));
+          localStorage.setItem("value", JSON.stringify(arr));
+          randerCarlist();
+          shoppingCarlist();
+        }
+        if (btn.tagName == "BUTTON" && btn.innerHTML == "移除购物车") {
+          let num = Carlist[index].number;
+          let id = Carlist[index].id;
+          let arrindex = arr.findIndex((item) => {
+            return item.id == id;
+          });
+          arr[arrindex].Number += num;
+          Carlist.splice(index, 1);
+          localStorage.setItem("value1", JSON.stringify(Carlist));
+          randerCarlist();
+          shoppingCarlist();
+        }
+      }
+      //保存事件
+      function modalTwoFun() {
+        let btn = event.target;
+        if (btn.tagName == "BUTTON" && btn.innerHTML == "取消") {
+          modalTwo.style.display = "none";
+        }
+        if (btn.tagName == "BUTTON" && btn.innerHTML == "保存") {
+          // console.log(arr);
+          let index = document.getElementById("b1").innerHTML - 1;
+          console.log(index);
+          arr[index].img = document.getElementById("Myimg").value;
+          arr[index].Carname = document.getElementById("Myname").value;
+          arr[index].price = document.getElementById("Myprice").value;
+          arr[index].Number = document.getElementById("Mynumber").value;
+          localStorage.setItem("value", JSON.stringify(arr));
+          randerCarlist();
+          modalTwo.style.display = "none";
+        }
+      }
+      let Carlist = [];
+      //tbody事件
+      function listtbodyfun() {
+        let btn = event.target;
+        if (btn.tagName == "BUTTON" && btn.innerHTML == "删除") {
+          let index = event.target.dataset.index;
+          arr.splice(index, 1);
+          localStorage.setItem("value", JSON.stringify(arr));
+          randerCarlist();
+        }
+        if (btn.tagName == "BUTTON" && btn.innerHTML == "编辑") {
+          modalTwo.style.display = "block";
+          let index = event.target.dataset.index;
+          document.getElementById("b1").innerHTML = arr[index].id;
+          document.getElementById("Myimg").value = arr[index].img;
+          document.getElementById("Myname").value = arr[index].Carname;
+          document.getElementById("Myprice").value = arr[index].price;
+          document.getElementById("Mynumber").value = arr[index].Number;
+        }
+        if (btn.tagName == "BUTTON" && btn.innerHTML == "添加购物车") {
+          let index = event.target.dataset.index;
+          console.log(arr[index].Number);
+          if (arr[index].Number == 0) {
+            alert("库存不足");
+            return;
+          } else {
+            arr[index].Number--;
+            localStorage.setItem("value", JSON.stringify(arr));
+            randerCarlist();
+          }
+
+          let Carindex = Carlist.findIndex((item) => {
+            return item.id == arr[index].id;
+          });
+          if (Carindex == -1) {
+            let data = {
+              id: arr[index].id,
+              img: arr[index].img,
+              name: arr[index].Carname,
+              price: arr[index].price,
+              number: 1,
+            };
+            Carlist.push(data);
+            shoppingCarlist();
+          } else {
+            Carlist[Carindex].number++;
+            localStorage.setItem("value1", JSON.stringify(Carlist));
+            shoppingCarlist();
+          }
+        }
+      }
+      //添加事件
+      function hiddenboxFun() {
+        let btn = event.target;
+        if (btn.tagName == "BUTTON" && btn.innerHTML == "取消") {
+          hiddenbox.style.display = "none";
+        }
+        if (btn.tagName == "BUTTON" && btn.innerHTML == "确认") {
+          let img = document.getElementById("img").value;
+          let name = document.getElementById("name").value;
+          let price = document.getElementById("price").value;
+          let number = document.getElementById("number").value;
+          let obj = {
+            id: arr.length + 1,
+            img: img,
+            Carname: name,
+            price: price,
+            Number: number,
+          };
+          arr.push(obj);
+          localStorage.setItem("value", JSON.stringify(arr));
+          randerCarlist();
+          document.getElementById("img").value = "";
+          document.getElementById("name").value = "";
+          document.getElementById("price").value = "";
+          document.getElementById("number").value = "";
+          hiddenbox.style.display = "none";
+        }
+      }
+      function addFun() {
+        hiddenbox.style.display = "block";
+      }
+      function randerCarlist() {
+        let html = "";
+        arr.forEach((item, index) => {
+          html += ` <tr>
+                   <td>${item.id}</td>
+                   <td>
+                     <img src="${item.img}" alt="产品图片" />
+                   </td>
+                   <td>${item.Carname}</td>
+                   <td>${item.price}</td>
+                   <td>${item.Number}</td>
+                   <td><button type="button" class="btn btn-secondary" data-index=${index}>删除</button>
+                    <button type="button" class="btn btn-secondary" data-index=${index}>编辑</button>
+                    <button type="button" class="btn btn-secondary"data-index=${index}>添加购物车</button></td>
+                </tr>`;
+        });
+        $("#listtbody").html(html);
+      }
+      function shoppingCarlist() {
+        let html = "";
+        Carlist.forEach((item, index) => {
+          html += ` <tr>
+                   <td>${item.id}</td>
+                   <td>
+                     <img src="${item.img}" alt="产品图片" />
+                   </td>
+                   <td>${item.name}</td>
+                   <td>${item.price}</td>
+                   <td><button type="button" class="btn btn-secondary"data-index=${index}>+</button>${
+            item.number
+          }<button type="button" class="btn btn-secondary"data-index=${index}>-</button></td>
+                   <td>${item.price * item.number}</td>
+                   <td><button type="button" class="btn btn-secondary"data-index=${index}>移除购物车</button></td>
+                </tr>`;
+        });
+        $("#Carlisttbody").html(html);
+        zongji();
+      }
+    </script>
+  </body>
+</html>

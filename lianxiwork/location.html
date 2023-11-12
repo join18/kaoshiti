@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>退出登陆</title>
+  </head>
+  <style>
+    #delbtn {
+      width: 100px;
+      height: 40px;
+    }
+  </style>
+  <body>
+    <button id="delbtn">退出登陆</button>
+    <p></p>
+    <script>
+      let delbtn = document.getElementById("delbtn");
+      let p = document.querySelector("p");
+      let id = localStorage.getItem("ID");
+      let password = localStorage.getItem("password");
+      console.log(id, password);
+      p.innerHTML = "账号：" + id + "&emsp;" + "密码：" + password;
+      delbtn.addEventListener("click", function () {
+        localStorage.clear();
+        location.href = "denglu.html";
+      });
+    </script>
+  </body>
+</html>

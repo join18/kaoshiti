@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>增删改查表</title>
+    <style>
+      #bigbox {
+        margin: auto;
+        width: 1200px;
+      }
+      table {
+        width: 950px;
+        border: 1px solid black;
+        margin: auto;
+        border-collapse: collapse;
+        text-align: center;
+      }
+      tr,
+      th,
+      td {
+        border: 1px solid black;
+      }
+      #box {
+        width: 950px;
+        margin: auto;
+        margin-bottom: 30px;
+        margin-top: 50px;
+      }
+      button {
+        width: 50px;
+      }
+      #hiddenbox1 {
+        width: 280px;
+        height: 300px;
+        background-color: aliceblue !important;
+        margin: auto;
+        margin-top: -80px;
+      }
+      #btnbox {
+        width: 400px;
+        margin: auto;
+        margin-top: 30px;
+      }
+      #btnbox button {
+        width: 110px;
+        height: 30px;
+        margin-left: 15px;
+      }
+
+      #overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+      }
+
+      #modal {
+        background: white;
+        max-width: 400px;
+        height: 300px;
+        margin: 180px auto;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+
+      #closeBtn {
+        cursor: pointer;
+        font-size: 18px;
+        color: #888;
+      }
+      #modal input {
+        margin-top: 10px;
+      }
+      #modal button {
+        margin-top: 45px;
+        margin-right: 55px;
+        margin-left: 55px;
+      }
+      .one {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="bigbox">
+      <div id="box">
+        搜索：<input type="text" id="serch" /> 姓名：<input
+          type="text"
+          name="name"
+          id="name"
+        />
+        年龄：<input type="text" name="age" /> 性别：<input
+          type="text"
+          name="sex"
+        />
+        <button id="addbtn">添加</button>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th><input type="checkbox" id="allbtn" /></th>
+            <th>姓名</th>
+            <th>年龄</th>
+            <th>性别</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody id="tbodylist"></tbody>
+      </table>
+    </div>
+    <div id="btnbox">
+      <button id="alldel">删除选中</button
+      ><button id="rancemin">年龄从小到大排</button
+      ><button id="rancemax">年龄从大到小排</button>
+    </div>
+    <div id="overlay" class="one">
+      <div id="modal">
+        <h2>修改</h2>
+        姓名：<input type="text" name="xiuname" /> <br />年龄：<input
+          type="text"
+          name="xiuage"
+        /><br />
+        性别：<input type="text" name="xiusex" /><br />
+        <button>保存</button><button>取消</button>
+      </div>
+    </div>
+    <script>
+      let htmlist = document.querySelector("tbody");
+      let addlist = document.getElementById("addbtn");
+      let allbtn = document.getElementById("allbtn");
+      let serch = document.getElementById("serch");
+      let alldel = document.getElementById("alldel");
+      let rancemin = document.getElementById("rancemin");
+      let rancemax = document.getElementById("rancemax");
+      let tanchu = document.getElementById("overlay");
+      let index;
+      let add = [];
+      //   console.log(addlist);
+      window.onload = function () {
+        let localadd = localStorage.getItem("add");
+        if (localadd != null) {
+          add = JSON.parse(localadd);
+        }
+        renderlist();
+        //添加事件
+        addlist.addEventListener("click", addFun);
+        htmlist.addEventListener("click", listFun);
+        allbtn.addEventListener("click", allFun);
+        checkFun();
+        serch.addEventListener("input", serchFun);
+        alldel.addEventListener("click", alldelFun);
+        rancemin.addEventListener("click", minFun);
+        rancemax.addEventListener("click", maxFun);
+        tanchu.addEventListener("click", xiugaiFun);
+      };
+
+      function xiugaiFun() {
+        if (
+          event.target.tagName == "BUTTON" &&
+          event.target.innerHTML == "取消"
+        ) {
+          tanchu.style.display = "none";
+        }
+        if (
+          event.target.tagName == "BUTTON" &&
+          event.target.innerHTML == "保存"
+        ) {
+          console.log(333);
+          add[index].name = document.querySelector(
+            "input[name='xiuname']"
+          ).value;
+          add[index].age = document.querySelector("input[name='xiuage']").value;
+          add[index].sex = document.querySelector("input[name='xiusex']").value;
+          localStorage.setItem("add", JSON.stringify(add));
+          renderlist();
+          tanchu.style.display = "none";
+        }
+      }
+      function minFun() {
+        add = add.sort((a, b) => a.age - b.age);
+        renderlist();
+      }
+      function maxFun() {
+        add = add.sort((a, b) => b.age - a.age);
+        renderlist();
+      }
+      function alldelFun() {
+        add = add.filter((item) => !item.status);
+        localStorage.setItem("add", JSON.stringify(add));
+        renderlist();
+      }
+      function serchFun() {
+        console.log(123);
+        let text = this.value;
+        let data = add.filter((item) => {
+          return item.name.includes(text);
+        });
+        renderlist(data);
+      }
+      function checkFun() {
+        allbtn.checked = add.every((item) => {
+          return item.status;
+        });
+      }
+      function allFun() {
+        add.forEach((item) => {
+          item.status = this.checked;
+        });
+        localStorage.setItem("add", JSON.stringify(add));
+        renderlist();
+      }
+      function listFun() {
+        let btn = event.target;
+        index = event.target.dataset.index;
+        if (btn.tagName == "BUTTON" && btn.innerHTML == "删除") {
+          add.splice(index, 1);
+          localStorage.setItem("add", JSON.stringify(add));
+          renderlist();
+        }
+        if (btn.tagName == "INPUT") {
+          add[index].status = !add[index].status;
+          localStorage.setItem("add", JSON.stringify(add));
+        }
+        checkFun();
+        if (btn.tagName == "BUTTON" && btn.innerHTML == "修改") {
+          tanchu.style.display = "block";
+          document.querySelector("input[name='xiuname']").value =
+            add[index].name;
+          document.querySelector("input[name='xiuage']").value = add[index].age;
+          document.querySelector("input[name='xiusex']").value = add[index].sex;
+          renderlist();
+        }
+      }
+      function addFun() {
+        let myname = document.querySelector("input[name='name']").value;
+        let myage = document.querySelector("input[name='age']").value;
+        let mysex = document.querySelector("input[name='sex']").value;
+        let obj = {
+          name: myname,
+          age: myage,
+          sex: mysex,
+          status: false,
+        };
+        add.push(obj);
+        document.querySelector("input[name='name']").value = "";
+        document.querySelector("input[name='age']").value = "";
+        document.querySelector("input[name='sex']").value = "";
+        localStorage.setItem("add", JSON.stringify(add));
+        renderlist();
+      }
+      function renderlist(data = add) {
+        let html = "";
+        data.forEach((item, index) => {
+          html += `<tr>
+                   <td><input type="checkbox" data-index=${index} ${
+            item.status ? "checked" : ""
+          }/></td>
+                   <td>${item.name}</td>
+                   <td>${item.age}</td>
+                   <td>${item.sex}</td>
+                   <td><button data-index=${index}>删除</button><button data-index=${index}>修改</button></td>
+                   </tr>
+        `;
+        });
+        htmlist.innerHTML = html;
+        checkFun();
+      }
+    </script>
+  </body>
+</html>

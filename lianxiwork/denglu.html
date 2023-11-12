@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>登陆页面</title>
+  </head>
+  <style>
+    body {
+      background-color: black;
+    }
+    div {
+      width: 500px;
+      height: 400px;
+      background-image: url("https://img2.baidu.com/it/u=3140051974,553953545&fm=253&app=120&size=w931&n=0&f=JPEG&fmt=auto?sec=1698339600&t=9c5ec5ef1612351bd291e8e472cb9ccd");
+      background-size: 500px 400px;
+      border: 1px solid white;
+      margin: 150px auto;
+      text-align: center;
+      border-radius: 8px;
+    }
+    div h1 {
+      margin-top: 35px;
+    }
+    div input {
+      margin-top: 30px;
+    }
+    button {
+      width: 100px;
+      height: 30px;
+    }
+  </style>
+  <body>
+    <div>
+      <h1>登录</h1>
+      账号：<input type="text" id="ID" /> <br />密码：<input
+        type="password"
+        id="password"
+      /><br />
+      <input type="checkbox" id="state" />状态<br /><br />
+      <button id="logon">登录</button>
+    </div>
+    <script>
+      let state = document.getElementById("state");
+      let logon = document.getElementById("logon");
+      let ID = document.getElementById("ID");
+      let password = document.getElementById("password");
+      window.onload = function () {
+        logon.addEventListener("click", logonFun);
+        ID.value = localStorage.getItem("ID");
+        password.value = localStorage.getItem("password");
+        state.checked = localStorage.getItem("state");
+        if (ID.value != "" && password.value != "") {
+          location.href = "location.html";
+        }
+      };
+      function logonFun() {
+        if (state.checked) {
+          localStorage.setItem("ID", ID.value);
+          localStorage.setItem("password", password.value);
+          localStorage.setItem("state", state.checked);
+          location.href = "location.html";
+        } else if (ID.value == "" && password.value == "") {
+          alert("请先输入账号密码");
+        } else {
+          location.href = "location.html";
+        }
+      }
+    </script>
+  </body>
+</html>

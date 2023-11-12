@@ -1,0 +1,178 @@
+body{
+  background-color: black;
+}
+/* 商品列表容器 */
+.product-list {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 20px;
+  }
+  
+  /* 商品列表标题 */
+  .product-list caption {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  /* 商品列表表头 */
+  .product-list thead th {
+    text-align: center;
+    padding: 10px;
+    background-color: #eee;
+    border: 1px solid #ccc;
+  }
+  
+  /* 商品列表表格内容 */
+  .product-list td {
+    text-align: center;
+    padding: 10px;
+    border: 1px solid #ccc;
+  }
+  
+  /* 添加到购物车按钮 */
+  .add-to-cart-btn {
+    background-color: blue;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+/* 购物车容器 */
+.cart {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 20px;
+  }
+  
+  /* 购物车标题 */
+  .cart caption {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  /* 购物车表头 */
+  .cart thead th {
+    text-align: center;
+    padding: 10px;
+    background-color: #eee;
+    border: 1px solid #ccc;
+  }
+  
+  /* 购物车表格内容 */
+  .cart td {
+    text-align: center;
+    padding: 10px;
+    border: 1px solid #ccc;
+  }
+  
+  /* 删除按钮 */
+  .remove-btn {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  /* 结账按钮 */
+  .checkout-btn {
+    background-color: green;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  /* 数量输入框 */
+  input[type="number"] {
+    width: 60px;
+    text-align: center;
+  }
+  #addbtn{
+    margin-left: 20px;
+  }
+  #listbox h1{
+    text-align: center;
+    margin-top: 20px;
+  }
+  #shoppingbox h1{
+    text-align: center;
+  }
+  img{
+    width: 50px;
+    height: 50px;
+  }
+   #modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+  
+  /* 弹出层内容容器 */
+   #modal-content {
+    background-color: white;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    height: 550px;
+    max-width: 500px;
+    text-align: center;
+    border-radius: 5px;
+  }
+  #modal-content input{
+    margin-top: 40px;
+  }
+  #modal-content button {
+    margin-top: 50px;
+    margin-left: 30px;
+    margin-right: 20px;
+  }
+  #modal-content button:nth-of-type(2){
+    margin-left: 40px;
+  }
+  /*修改遮罩层*/
+  #modalTwo {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+  /* 修改弹出层内容容器 */
+   #modal-content-two {
+    background-color: white;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    height: 550px;
+    max-width: 500px;
+    text-align: center;
+    border-radius: 5px;
+  }
+  #modal-content-two input{
+    margin-top: 40px;
+  }
+  #modal-content-two button {
+    margin-top: 50px;
+    margin-left: 30px;
+    margin-right: 20px;
+  }
+  #modal-content-two button:nth-of-type(2){
+    margin-left: 40px;
+  }
+ 

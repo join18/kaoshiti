@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="../alllinks/node_modules/jquery/dist/jquery.js"></script>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+      }
+      ul,
+      li {
+        list-style: none;
+      }
+      #box {
+        width: 300px;
+        height: 600px;
+        border: 1px solid black;
+        float: left;
+      }
+      #box li {
+        width: 300px;
+        height: 100px;
+        border-bottom: 1px solid red;
+        background-color: aqua;
+        text-align: center;
+        line-height: 100px;
+      }
+      #boxtext {
+        width: 800px;
+        height: 600px;
+        border: 1px solid black;
+        float: left;
+        margin: auto;
+      }
+      #boxtext li {
+        width: 230px;
+        height: 200px;
+        background-color: whitesmoke;
+        float: left;
+        margin-left: 30px;
+        margin-top: 40px;
+      }
+      img {
+        width: 100%;
+        height: 160px;
+      }
+      p {
+        height: 30px;
+        text-align: center;
+        line-height: 30px;
+      }
+      #bigbox {
+        width: 1111px;
+        height: 600px;
+        margin: auto;
+        margin-top: 30px;
+      }
+      .active {
+        background-color: aquamarine;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="bigbox">
+      <div id="box">
+        <ul>
+          <li>1</li>
+          <li>2</li>
+          <li>3</li>
+          <li>4</li>
+          <li>5</li>
+          <li>6</li>
+        </ul>
+      </div>
+      <div id="boxtext">
+        <ul></ul>
+      </div>
+    </div>
+
+    <script>
+      //   $("#box").click(function () {
+      //     if (event.target.tagName == "LI" && event.target.innerHTML == "1") {
+      //       $("#one").css("display", "block");
+      //       $("#two").css("display", "none");
+      //       $("#three").css("display", "none");
+      //       $("#four").css("display", "none");
+      //       $("#five").css("display", "none");
+      //       $("#six").css("display", "none");
+      //     }
+      //     if (event.target.tagName == "LI" && event.target.innerHTML == "2") {
+      //       $("#two").css("display", "block");
+      //       $("#one").css("display", "none");
+      //       $("#three").css("display", "none");
+      //       $("#four").css("display", "none");
+      //       $("#five").css("display", "none");
+      //       $("#six").css("display", "none");
+      //     }
+      //     if (event.target.tagName == "LI" && event.target.innerHTML == "3") {
+      //       $("#three").css("display", "block");
+      //       $("#two").css("display", "none");
+      //       $("#one").css("display", "none");
+      //       $("#four").css("display", "none");
+      //       $("#five").css("display", "none");
+      //       $("#six").css("display", "none");
+      //     }
+      //     if (event.target.tagName == "LI" && event.target.innerHTML == "4") {
+      //       $("#four").css("display", "block");
+      //       $("#three").css("display", "none");
+      //       $("#two").css("display", "none");
+      //       $("#one").css("display", "none");
+      //       $("#five").css("display", "none");
+      //       $("#six").css("display", "none");
+      //     }
+      //     if (event.target.tagName == "LI" && event.target.innerHTML == "5") {
+      //       $("#five").css("display", "block");
+      //       $("#three").css("display", "none");
+      //       $("#two").css("display", "none");
+      //       $("#one").css("display", "none");
+      //       $("#four").css("display", "none");
+      //       $("#six").css("display", "none");
+      //     }
+      //     if (event.target.tagName == "LI" && event.target.innerHTML == "6") {
+      //       $("#six").css("display", "block");
+      //       $("#three").css("display", "none");
+      //       $("#two").css("display", "none");
+      //       $("#one").css("display", "none");
+      //       $("#five").css("display", "none");
+      //       $("#four").css("display", "none");
+      //     }
+      //   });
+    </script>
+    <script>
+      let arr = [
+        {
+          title: "草帽海贼团",
+          checked: true,
+          children: [
+            {
+              name: "蒙奇·D·路飞",
+              img: "https://pic4.zhimg.com/80/v2-c40920e1c70c81f970ec6b45fb31ccd7_720w.webp",
+            },
+            {
+              name: "罗罗诺亚·索隆",
+              img: "https://img1.baidu.com/it/u=3183939685,2647199438&fm=253&fmt=auto&app=138&f=JPEG?w=943&h=500",
+            },
+            {
+              name: "娜美",
+              img: "https://img2.baidu.com/it/u=2374590475,2015047451&fm=253&fmt=auto&app=120&f=JPEG?w=1280&h=744",
+            },
+            {
+              name: "山治",
+              img: "https://img0.baidu.com/it/u=4162057571,2699686493&fm=253&fmt=auto&app=138&f=PNG?w=888&h=500",
+            },
+            {
+              name: "乌索普",
+              img: "https://img2.baidu.com/it/u=241604647,2481534234&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=594",
+            },
+            {
+              name: "托尼托尼·乔巴",
+              img: "https://img0.baidu.com/it/u=2183872526,3166305495&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=500",
+            },
+          ],
+        },
+        {
+          title: "白胡子海贼团",
+          children: [
+            {
+              name: "爱德华·纽盖特",
+              img: "http://hiphotos.baidu.com/feed/pic/item/72f082025aafa40ff127d028a764034f79f01965.jpg",
+            },
+            {
+              name: "马尔科",
+              img: "https://t11.baidu.com/it/app=25&f=JPEG&fm=173&fmt=auto&u=1619917024%2C1691769383?w=640&h=368&s=3A972CC05C837AD048061310030050DD",
+            },
+            {
+              name: "波特卡斯·D·艾斯",
+              img: "https://t12.baidu.com/it/app=25&f=JPEG&fm=173&fmt=auto&u=489617522%2C2552305764?w=640&h=399&s=744DFE1E134056F7B298A1E80300F03B",
+            },
+            {
+              name: "乔兹",
+              img: "https://t12.baidu.com/it/app=25&f=JPEG&fm=173&fmt=auto&u=949535819%2C2069255397?w=536&h=300&s=3AB8278EC89469C2589D14C70300B070",
+            },
+            {
+              name: "萨奇",
+              img: "https://t12.baidu.com/it/app=25&f=JPEG&fm=173&fmt=auto&u=2961349844%2C2637811004?w=600&h=370&s=F03582744913E7D4502A71DF0300B0B8",
+            },
+            {
+              name: "比斯塔",
+              img: "https://t10.baidu.com/it/app=25&f=JPEG&fm=173&fmt=auto&u=2847760602%2C3504343948?w=497&h=273&s=42547B8C628F3CF244B0818603007090",
+            },
+          ],
+        },
+      ];
+      $(function () {
+        rander();
+        randerlist(0);
+        $("#box li").on("click", function () {
+          let index = $(this).index();
+          $("li").removeClass("active");
+          $("li").eq(index).addClass("active");
+          randerlist(index);
+        });
+      });
+      function randerlist(index) {
+        let data = arr[index].children;
+        let html = "";
+        data.forEach((item, index) => {
+          html += `  <li>
+                       <img src="${item.img}" alt="" />
+                       <p>${item.name}</p>
+                     </li>`;
+        });
+        $("#boxtext").html(html);
+      }
+      function rander() {
+        html = "";
+        arr.forEach((item) => {
+          html += ` <li style="${item.checked ? "background:aqua" : ""}">${
+            item.title
+          }</li>`;
+        });
+        $("#box").html(html);
+        $("li:first").addClass("active");
+      }
+    </script>
+  </body>
+</html>
