@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="./node_modules/jquery/dist/jquery.js"></script>
+    <link rel="stylesheet" href="./bootstrap.min.css" />
+    <script src="./bootstrap.bundle.min.js"></script>
+    <style>
+      .table {
+        width: 80%;
+        margin: auto;
+        text-align: center;
+      }
+      #addbtn {
+        margin-left: 163px;
+        margin-top: 50px;
+        margin-bottom: 5px;
+      }
+      /* 弹出框遮罩层 */
+      .overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+      }
+
+      /* 弹出框容器 */
+      .dialog {
+        background-color: #fefefe;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 400px;
+        height: 530px;
+        margin-top: 100px;
+        margin-left: 600px;
+        text-align: center;
+        border-radius: 10px;
+      }
+      .dialog h1 {
+        margin-top: 20px;
+      }
+      .dialog input {
+        margin-top: 30px;
+      }
+      .dialog button {
+        margin-top: 50px;
+      }
+      .dialog button:nth-of-type(1) {
+        margin-right: 50px;
+        margin-left: 100px;
+      }
+      .dialog button:nth-of-type(2) {
+        margin-right: 80px;
+      }
+      /*修改弹出框*/
+      /* 弹出层容器 */
+      .modal {
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+
+      /* 弹出层内容容器 */
+      #modal-content {
+        background-color: #fefefe;
+        margin: 100px auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 400px;
+        height: 530px;
+        text-align: center;
+        border-radius: 10px;
+      }
+      #modal-content h1 {
+        margin-top: 20px;
+      }
+      #modal-content input {
+        margin-top: 30px;
+      }
+      #modal-content button {
+        margin-top: 50px;
+      }
+      #modal-content button:nth-of-type(1) {
+        margin-right: 50px;
+        margin-left: 100px;
+      }
+      #modal-content button:nth-of-type(2) {
+        margin-right: 80px;
+      }
+
+      #xinxibox {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+      }
+
+      /* 弹出框容器 */
+      #xinxison {
+        background-color: #fefefe;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 400px;
+        height: 530px;
+        margin-top: 100px;
+        margin-left: 600px;
+        text-align: center;
+        border-radius: 10px;
+      }
+      #xinxison h1 {
+        margin-top: 20px;
+      }
+      #xinxison input {
+        margin-top: 30px;
+      }
+      #xinxison button {
+        width: 100px;
+        margin-top: 50px;
+      }
+    </style>
+  </head>
+  <body>
+    <button type="button" class="btn btn-outline-success" id="addbtn">
+      添加新茶叶
+    </button>
+    <div id="xinxibox">
+      <div id="xinxison">
+        <h1>茶叶信息--<b id="b1"></b></h1>
+        茶叶名称：<input type="text" / id="xname"><br />
+        茶叶类型：<input type="text" / id="xtype"><br />
+        茶叶价格：<input type="text" / id="xprice"><br />
+        茶叶库存：<input type="text" / id="xstock"><br />
+        茶叶描述：<input type="text" / id="xdescription"><br />
+        <button type="button" class="btn btn-outline-success">取消</button>
+      </div>
+    </div>
+
+    <div class="modal">
+      <div id="modal-content">
+        <h1>修改茶叶--<b></b></h1>
+        茶叶名称：<input type="text" / id="Myname"><br />
+        茶叶类型：<input type="text" / id="Mytype"><br />
+        茶叶价格：<input type="text" / id="Myprice"><br />
+        茶叶库存：<input type="text" / id="Mystock"><br />
+        茶叶描述：<input type="text" / id="Mydescription"><br />
+        <button type="button" class="btn btn-outline-success">修改</button
+        ><button type="button" class="btn btn-outline-success">取消</button>
+      </div>
+    </div>
+    <div id="dialogOverlay" class="overlay">
+      <div id="dialog" class="dialog">
+        <h1>添加茶叶</h1>
+        茶叶名称：<input type="text" / id="name"><br />
+        茶叶类型：<input type="text" / id="type"><br />
+        茶叶价格：<input type="text" / id="price"><br />
+        茶叶库存：<input type="text" / id="stock"><br />
+        茶叶描述：<input type="text" / id="description"><br />
+        <button type="button" class="btn btn-outline-success">添加</button
+        ><button type="button" class="btn btn-outline-success">取消</button>
+      </div>
+    </div>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">茶叶名称</th>
+          <th scope="col">茶叶类型</th>
+          <th scope="col">茶叶价格</th>
+          <th scope="col">茶叶库存</th>
+          <th scope="col">茶叶描述</th>
+          <th scope="col">茶叶创建时间</th>
+          <th scope="col">茶叶更新时间</th>
+          <th scope="col">操作</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <script>
+      $(function () {
+        randerTealist();
+        $("#addbtn").on("click", addbtnlist);
+        $("#dialogOverlay").on("click", addboxFun);
+        $("tbody").on("click", tbodyFun);
+        $(".modal").on("click", alterFun);
+        $("#xinxibox").on("click", xinxiboxFun);
+      });
+      function xinxiboxFun() {
+        let btn = event.target;
+        if (btn.tagName == "BUTTON" && btn.innerHTML == "取消") {
+          $("#xinxibox").hide();
+        }
+      }
+      function alterFun() {
+        let btn = event.target;
+        if (btn.tagName == "BUTTON" && btn.innerHTML == "取消") {
+          $(".modal").hide();
+        }
+        if (btn.tagName == "BUTTON" && btn.innerHTML == "修改") {
+          let name = $("#Myname").val();
+          let type = $("#Mytype").val();
+          let price = $("#Myprice").val();
+          let stock = $("#Mystock").val();
+          let description = $("#Mydescription").val();
+          let id = $("b").html();
+          let alterobj = {
+            name,
+            type,
+            price,
+            stock,
+            description,
+          };
+          $.ajax({
+            url: "https://liu.zzgoodqc.cn/teas/" + id,
+            type: "PUT",
+            data: alterobj,
+            success: function (data) {
+              randerTealist();
+              $(".modal").hide();
+            },
+          });
+        }
+      }
+      function tbodyFun() {
+        let btn = event.target;
+        let id = $(event.target).data("id");
+        if (btn.tagName == "BUTTON" && btn.innerHTML == "删除") {
+          $.ajax({
+            url: "https://liu.zzgoodqc.cn/teas/" + id,
+            type: "DELETE",
+            success: function (data) {
+              randerTealist();
+            },
+          });
+        }
+        if (btn.tagName == "BUTTON" && btn.innerHTML == "编辑") {
+          let index = $(event.target).data("index");
+          console.log(index);
+          $.ajax({
+            url: "https://liu.zzgoodqc.cn/teas/",
+            type: "GET",
+            success: function (res) {
+              let arr = JSON.parse(res).data;
+              $("b").html(arr[index].id);
+              $("#Myname").val(arr[index].name);
+              $("#Mytype").val(arr[index].type);
+              $("#Myprice").val(arr[index].price);
+              $("#Mystock").val(arr[index].stock);
+              $("#Mydescription").val(arr[index].description);
+            },
+          });
+          $(".modal").show();
+        }
+        if (btn.tagName == "BUTTON" && btn.innerHTML == "查询") {
+          $.ajax({
+            url: "https://liu.zzgoodqc.cn/teas/" + id,
+            type: "GET",
+            success: function (res) {
+              let arr = res.data;
+              $("#b1").html(arr.id);
+              $("#xname").val(arr.name);
+              $("#xtype").val(arr.type);
+              $("#xprice").val(arr.price);
+              $("#xstock").val(arr.stock);
+              $("#xdescription").val(arr.description);
+              $("#xinxibox").show();
+            },
+          });
+        }
+      }
+      function addboxFun() {
+        let btn = event.target;
+        if (btn.tagName == "BUTTON" && btn.innerHTML == "取消") {
+          $("#dialogOverlay").hide();
+        }
+        if (btn.tagName == "BUTTON" && btn.innerHTML == "添加") {
+          let name = $("#name").val();
+          let type = $("#type").val();
+          let price = $("#price").val();
+          let stock = $("#stock").val();
+          let description = $("#description").val();
+          let obj = {
+            name,
+            type,
+            price,
+            stock,
+            description,
+          };
+          $.ajax({
+            url: "https://liu.zzgoodqc.cn/teas",
+            type: "POST",
+            data: obj,
+            success: function (data) {
+              randerTealist();
+              $("#dialogOverlay").hide();
+            },
+          });
+        }
+      }
+      function addbtnlist() {
+        $("#dialogOverlay").show();
+      }
+      function randerTealist() {
+        $.ajax({
+          url: "https://liu.zzgoodqc.cn/teas",
+          type: "GET",
+          success: function (res) {
+            let arr = JSON.parse(res).data;
+            let html = "";
+            arr.forEach((item, index) => {
+              html += `<tr>
+                           <td>${item.id}</td>
+                           <td>${item.name}</td>
+                           <td>${item.type}</td>
+                           <td>${item.price}</td>
+                           <td>${item.stock}</td>
+                           <td>${item.description}</td>
+                           <td>${item.created_at}</td>
+                           <td>${item.updated_at}</td>
+                           <td>
+                             <button type="button" class="btn btn-outline-success" data-index=${index}>编辑</button
+                             ><button type="button" class="btn btn-outline-success" data-id=${item.id} >删除</button>
+                             <button type="button" class="btn btn-outline-success"data-id=${item.id}>查询</button>
+                           </td>
+                      </tr>`;
+            });
+            $("tbody").html(html);
+          },
+        });
+      }
+    </script>
+  </body>
+</html>
